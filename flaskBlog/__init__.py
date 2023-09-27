@@ -11,5 +11,6 @@ db = SQLAlchemy(app) #creats sql alchemy database instance
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
+login_manager.login_message_category = 'info'  #in bootstrap its a blue information alert
 
 from flaskBlog import routes
