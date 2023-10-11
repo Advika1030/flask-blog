@@ -1,0 +1,17 @@
+<!-- your_events.html -->
+
+{% extends "layout.html" %}
+{% block content %}
+<h1>Your Events</h1>
+<ul>
+    {% if rsvps %}
+        {% for rsvp in rsvps %}
+            <li>
+                <a href="{{ url_for('post', post_id=rsvp.post.id) }}">{{ rsvp.post.title }}</a>
+            </li>
+        {% endfor %}
+    {% else %}
+        <p>No events RSVP'd.</p>
+    {% endif %}
+</ul>
+{% endblock %}

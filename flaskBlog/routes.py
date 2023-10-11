@@ -1,11 +1,13 @@
+#routes.py
+
 import os
 import secrets
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from datetime import datetime
 from flaskBlog import app, db, bcrypt
-from flaskBlog.form import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
-from flaskBlog.models import User,Post
+from flaskBlog.form import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, RSVPForm
+from flaskBlog.models import User,Post, RSVP
 from flask_login import login_user, current_user, logout_user, login_required
 
 
@@ -101,10 +103,24 @@ def new_post():
     return render_template('create_post.html', title = 'New Post', form = form, legend = 'Update Post')
 
 
-@app.route("/post/<int:post_id>")
+# ...
+@app.route("/post/<int:post_id>", methods=['GET', 'POST'])
 def post(post_id):
     post = Post.query.get_or_404(post_id)
-    return render_template('post.html', title = post.title, post = post)
+    rsvp_form = RSVPForm()
+
+    if rsvp_form.validate_on_submit():
+        if not RSVP.query.filter_by(user_id=current_user.id, post_id=post_id).first():
+            rsvp = RSVP(user_id=current_user.id, post_id=post_id)
+            db.session.add(rsvp)
+            db.session.commit()
+            flash('You have RSVP\'d to the event.', 'success')
+        else:
+            flash('You have already RSVP\'d to this event.', 'warning')
+
+    return render_template('post.html', title=post.title, post=post, rsvp_form=rsvp_form)
+
+
 
 @app.route("/post/<int:post_id>/update", methods = ['GET','POST'])
 @login_required
@@ -136,3 +152,32 @@ def delete_post(post_id):
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('home'))
 
+
+
+@app.route("/rsvp/<int:post_id>", methods=['POST'])
+@login_required
+def rsvp_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    rsvp_form = RSVPForm()
+
+    if rsvp_form.validate_on_submit():
+        # Check if the user has already RSVP'd for the event
+        if not RSVP.query.filter_by(user_id=current_user.id, post_id=post_id).first():
+            rsvp = RSVP(user_id=current_user.id, post_id=post_id)
+            db.session.add(rsvp)
+            db.session.commit()
+            flash('You have RSVP\'d to the event.', 'success')
+        else:
+            flash('You have already RSVP\'d to this event.', 'warning')
+
+    return render_template('post.html', title=post.title, post=post, rsvp_form=rsvp_form)
+
+
+
+#....
+
+@app.route("/your_events")
+@login_required
+def your_events():
+    rsvps = RSVP.query.filter_by(user_id=current_user.id).all()
+    return render_template('your_events.html', title='Your Events', rsvps=rsvps)

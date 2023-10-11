@@ -1,3 +1,4 @@
+<!--layout.html-->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,9 +9,9 @@
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}">
   {% if title %}
-  <title>Flask Blog - {{ title }}</title>
+  <title>Eventure - {{ title }}</title>
   {% else %}
-  <title>Flask Blog</title>
+  <title>Eventure</title>
   {% endif %}
 
 </head>
@@ -19,7 +20,7 @@
   <header class="site-header">
     <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
       <div class="container">
-        <a class="navbar-brand mr-4" href="/">Flask Blog</a>
+        <a class="navbar-brand mr-4" href="/">Eventure</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
           aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -28,6 +29,7 @@
           <div class="navbar-nav mr-auto">
             <a class="nav-item nav-link" href="{{ url_for('home') }}">Home</a>
             <a class="nav-item nav-link" href="{{ url_for('about') }}">About</a>
+            <a class="nav-item nav-link" href="{{ url_for('your_events') }}">Your Events</a>
           </div>
           <!-- Navbar Right Side -->
           <div class="navbar-nav">
