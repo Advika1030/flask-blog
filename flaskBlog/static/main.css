@@ -9,11 +9,11 @@ body {
   }
   
   .bg-steel {
-    background-color: #5f788a;
+    background: linear-gradient(135deg, #FF5733, #FFA07A, #FF8C00);
   }
   
   .site-header .navbar-nav .nav-link {
-    color: #cbd5db;
+    color: #333333;
   }
   
   .site-header .navbar-nav .nav-link:hover {
