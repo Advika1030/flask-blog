@@ -1,9 +1,9 @@
 #routes.py
-
+#RSVP count
 import os
 import secrets
 from PIL import Image
-from flask import render_template, url_for, flash, redirect, request, abort
+from flask import render_template, url_for, flash, redirect, request, abort, jsonify
 from datetime import datetime
 from flaskBlog import app, db, bcrypt
 from flaskBlog.form import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, RSVPForm
@@ -108,6 +108,9 @@ def new_post():
 def post(post_id):
     post = Post.query.get_or_404(post_id)
     rsvp_form = RSVPForm()
+    
+    #counting rsvp's
+    rsvp_count = RSVP.query.filter_by(post_id=post_id).count()
 
     if rsvp_form.validate_on_submit():
         if not RSVP.query.filter_by(user_id=current_user.id, post_id=post_id).first():
@@ -118,7 +121,7 @@ def post(post_id):
         else:
             flash('You have already RSVP\'d to this event.', 'warning')
 
-    return render_template('post.html', title=post.title, post=post, rsvp_form=rsvp_form)
+    return render_template('post.html', title=post.title, post=post, rsvp_form=rsvp_form, rsvp_count=rsvp_count)
 
 
 
@@ -181,3 +184,9 @@ def rsvp_post(post_id):
 def your_events():
     rsvps = RSVP.query.filter_by(user_id=current_user.id).all()
     return render_template('your_events.html', title='Your Events', rsvps=rsvps)
+
+@app.route('/check_users', methods=['GET'])
+def check_users():
+    all_users = User.query.all()
+    user_data = [{'username':user.username,'password':user.password} for user in all_users]
+    return jsonify(user_data)
