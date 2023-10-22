@@ -1,14 +1,15 @@
 #routes.py
-#RSVP count
+
 import os
 import secrets
 from PIL import Image
-from flask import render_template, url_for, flash, redirect, request, abort, jsonify
+from flask import render_template, url_for, flash, redirect, request, abort, current_app
 from datetime import datetime
 from flaskBlog import app, db, bcrypt
 from flaskBlog.form import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, RSVPForm
 from flaskBlog.models import User,Post, RSVP
 from flask_login import login_user, current_user, logout_user, login_required
+from flask_mail import Mail, Message
 
 
 @app.route("/")
@@ -125,7 +126,7 @@ def post(post_id):
 
 
 
-@app.route("/post/<int:post_id>/update", methods = ['GET','POST'])
+@app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
     post = Post.query.get_or_404(post_id)
@@ -137,24 +138,26 @@ def update_post(post_id):
         post.content = form.content.data
         db.session.commit()
         flash('Your post has been updated', 'success')
-        return redirect(url_for('post', post_id = post.id))
+        return redirect(url_for('post', post_id=post.id))
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
-    return render_template('create_post.html', title = 'Update Post', form = form, legend = 'Update Post')
+    return render_template('create_post.html', title='Update Post', form=form, legend='Update Post')
 
-
-@app.route("/post/<int:post_id>/delete", methods = ['POST'])
+@app.route("/post/<int:post_id>/delete", methods=['POST'])
 @login_required
 def delete_post(post_id):
     post = Post.query.get_or_404(post_id)
+
+    # Check if the current user is the author of the post
     if post.author != current_user:
-        abort(403)
+        abort(403)  # HTTP 403 Forbidden
+
+    # Delete the post and its associated RSVPs
     db.session.delete(post)
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('home'))
-
 
 
 @app.route("/rsvp/<int:post_id>", methods=['POST'])
@@ -169,11 +172,17 @@ def rsvp_post(post_id):
             rsvp = RSVP(user_id=current_user.id, post_id=post_id)
             db.session.add(rsvp)
             db.session.commit()
-            flash('You have RSVP\'d to the event.', 'success')
+            flash('You have RSVP\'d to the event', 'success')
+
         else:
             flash('You have already RSVP\'d to this event.', 'warning')
 
+
+        
+
     return render_template('post.html', title=post.title, post=post, rsvp_form=rsvp_form)
+
+
 
 
 
@@ -185,8 +194,4 @@ def your_events():
     rsvps = RSVP.query.filter_by(user_id=current_user.id).all()
     return render_template('your_events.html', title='Your Events', rsvps=rsvps)
 
-@app.route('/check_users', methods=['GET'])
-def check_users():
-    all_users = User.query.all()
-    user_data = [{'username':user.username,'password':user.password} for user in all_users]
-    return jsonify(user_data)
+
