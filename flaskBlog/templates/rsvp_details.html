@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1>RSVP Details</h1>
+    <h2>Post Title: {{ post.title }}</h2>
+    <ul>
+        {% for rsvp in rsvps %}
+            <li>
+                Name: {{ User.username }}<br>
+                Email: {{ User.email }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

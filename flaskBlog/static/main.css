@@ -100,3 +100,38 @@ body {
   bottom: 0;
   width: 100%;
 }
+
+/* Custom styles for the search button */
+.search-bar button {
+  background-color:#FF5733; /* Change 'YourColor' to the color you want */
+  color: black; /* Text color */
+  border: none; /* Remove button border */
+  padding: 10px 20px; /* Adjust padding as needed */
+  border-radius: 5px; /* Add rounded corners */
+  cursor: pointer;
+}
+
+.search-bar button:hover {
+  background-color: #FFA07A; /* Change 'YourHoverColor' to the hover color you want */
+}
+
+
+/* Custom styles for the search bar and button */
+.search-container {
+  text-align: center;
+  padding: 20px; /* Add padding to center the search bar */
+}
+
+.search-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-bar input[type="text"] {
+  width: 100%; /* Make the input take the full width of its container */
+  padding: 10px; /* Adjust padding as needed */
+  border: none;
+  border-bottom: 2px solid black; /* Add a border line at the bottom */
+}
+

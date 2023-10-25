@@ -195,3 +195,28 @@ def your_events():
     return render_template('your_events.html', title='Your Events', rsvps=rsvps)
 
 
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        query = request.form.get('query')
+        events = Post.query.filter(Post.title.contains(query)).all()
+    else:
+        events = []  # Display no results initially
+
+    return render_template('search_results.html', events=events)
+
+
+
+@app.route("/post/<int:post_id>/rsvp_details")
+@login_required
+def rsvp_details(post_id):
+    post = Post.query.get_or_404(post_id)
+
+    # Check if the current user is the owner of the post
+    if post.author != current_user:
+        abort(403)  # HTTP 403 Forbidden
+
+    rsvps = RSVP.query.filter_by(post_id=post_id).all()
+
+    return render_template('rsvp_details.html', title="RSVP Details", post=post, rsvps=rsvps)

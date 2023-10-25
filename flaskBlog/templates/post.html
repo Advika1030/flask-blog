@@ -25,6 +25,10 @@
                   <small class="text-muted">RSVP count:{{rsvp_count}} </small>
                 </p>
             {% endif %}
+            {% if current_user == post.author %}
+               <a href="{{ url_for('rsvp_details', post_id=post.id) }}">View RSVP Details</a>
+            {% endif %}
+
         </div>
         <h2 class = "article-title">{{ post.title }}</h2>
         <p class="article-content">{{ post.content }}</p>
