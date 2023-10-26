@@ -96,7 +96,7 @@ def account():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title = form.title.data, content = form.content.data, author = current_user)
+        post = Post(title = form.title.data, content = form.content.data, author = current_user, time=form.time.data, place=form.place.data, date=form.date.data)
         db.session.add(post)
         db.session.commit()
         flash('Your post has been created!','success')
@@ -136,12 +136,18 @@ def update_post(post_id):
     if form.validate_on_submit():
         post.title = form.title.data
         post.content = form.content.data
+        post.date = form.date.data  # Update date
+        post.time = form.time.data  # Update time
+        post.place = form.place.data  # Update place
         db.session.commit()
         flash('Your post has been updated', 'success')
         return redirect(url_for('post', post_id=post.id))
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
+        form.date.data = post.date  # Populate date in the form
+        form.time.data = post.time  # Populate time in the form
+        form.place.data = post.place  # Populate place in the form
     return render_template('create_post.html', title='Update Post', form=form, legend='Update Post')
 
 @app.route("/post/<int:post_id>/delete", methods=['POST'])
@@ -205,7 +211,6 @@ def search():
         events = []  # Display no results initially
 
     return render_template('search_results.html', events=events)
-
 
 
 @app.route("/post/<int:post_id>/rsvp_details")

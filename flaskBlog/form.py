@@ -2,8 +2,8 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, DateField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Optional
 from flaskBlog.models import User
 
 class RegistrationForm(FlaskForm):
@@ -62,6 +62,9 @@ class UpdateAccountForm(FlaskForm):
 class PostForm(FlaskForm):
     title = StringField('Titile', validators = [DataRequired()])
     content = TextAreaField('Content', validators = [DataRequired()])
+    time = StringField('Time', validators=[Optional(), Length(max=10)])
+    place = StringField('Place', validators=[Optional(), Length(max=100)])
+    date = DateField('Date', validators=[Optional()])
     submit = SubmitField('Post')
 
 

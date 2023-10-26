@@ -2,6 +2,7 @@ body {
     background: #fafafa;
     color: #333333;
     margin-top: 7rem;
+    padding-bottom: 60px;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -91,14 +92,14 @@ body {
     font-size: 18px; 
 }
 
-.footer{
-  background-color:#111;
-  color: #fff;
-  padding: 20px;
-  text-align: center;
-  position: absolute;
+.sticky-footer {
+  position: fixed;
   bottom: 0;
   width: 100%;
+  background-color: black; /* Set your desired background color */
+  color: #fff; /* Set your desired text color */
+  padding: 10px; /* Adjust padding as needed */
+  text-align: center;
 }
 
 /* Custom styles for the search button */

@@ -1,14 +1,15 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <h1>RSVP Details</h1>
-    <h2>Post Title: {{ post.title }}</h2>
-    <ul>
+    <h1>RSVP Details for Post: {{ post.title }}</h1>
+    <ul class="list-group">
         {% for rsvp in rsvps %}
-            <li>
-                Name: {{ User.username }}<br>
-                Email: {{ User.email }}
-            </li>
+        <li class="list-group-item">
+            <strong>{{ rsvp.user.username }}</strong> 
+            <span class="text-muted">({{ rsvp.user.email }})</span>
+        </li>
         {% endfor %}
     </ul>
+    <a class="btn btn-secondary mt-3" href="{{ url_for('post', post_id=post.id) }}">Back to Post</a>
 {% endblock %}
+

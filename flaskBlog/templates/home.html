@@ -4,6 +4,8 @@
 
 {% block content %}
 
+
+
     {% for post in posts %}
         <article class="media content-section">
             <img class="rounded-circle article-img" src="{{url_for('static', filename='profile_pics/' + post.author.image_file)}}" alt="">
@@ -14,6 +16,9 @@
                 </div>
                 <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
                 <p class="article-content">{{ post.content }}</p>
+                <p><strong>Date:</strong> {{ post.date }}</p>
+                <p><strong>Place:</strong> {{ post.place }}</p>
+                <p><strong>Time:</strong> {{ post.time }}</p>
             </div>
         </article>
     {% endfor %}

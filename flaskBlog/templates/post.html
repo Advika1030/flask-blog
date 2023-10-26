@@ -21,7 +21,7 @@
                     {{ rsvp_form.hidden_tag() }}
                     <button type="submit" class="btn btn-primary">RSVP</button>
                 </form>
-                <p class=""article-metadata>
+                <p class="article-metadata">
                   <small class="text-muted">RSVP count:{{rsvp_count}} </small>
                 </p>
             {% endif %}
@@ -32,6 +32,15 @@
         </div>
         <h2 class = "article-title">{{ post.title }}</h2>
         <p class="article-content">{{ post.content }}</p>
+        <p class="">
+          <strong>Date:</strong> {{ post.date }}
+        </p>
+        <p class="">
+            <strong>Place:</strong> {{ post.place }}
+        </p>
+        <p class="">
+            <strong>Time:</strong> {{ post.time }}
+        </p>
     </div>
 </article>
 

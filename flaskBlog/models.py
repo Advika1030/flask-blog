@@ -3,6 +3,7 @@
 from datetime import datetime
 from flaskBlog import db,login_manager
 from flask_login import UserMixin
+from datetime import datetime
 
 
 @login_manager.user_loader
@@ -30,6 +31,9 @@ class Post(db.Model):
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     rsvps = db.relationship('RSVP', backref='post', lazy=True, cascade='all, delete-orphan')
+    time = db.Column(db.String(10), nullable=True)  # Optional time field
+    place = db.Column(db.String(100), nullable=True)  # Optional place field
+    date = db.Column(db.Date, nullable=True)  # Optional date field
     
 
     def __repr__(self):
@@ -37,9 +41,12 @@ class Post(db.Model):
 
 
 
-#.......
+
 class RSVP(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+
+    # Define a relationship to the User model
+    user = db.relationship('User', foreign_keys=[user_id], backref=db.backref('rsvps', lazy='dynamic'))
     
