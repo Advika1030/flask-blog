@@ -2,7 +2,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, DateField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, DateField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Optional
 from flaskBlog.models import User
 
@@ -66,6 +66,7 @@ class PostForm(FlaskForm):
     place = StringField('Place', validators=[Optional(), Length(max=100)])
     date = DateField('Date', validators=[Optional()])
     submit = SubmitField('Post')
+    category = SelectField('Category', choices=[('Corporate Events', 'Corporate Events'), ('Academic Events', 'Academic Events'), ('Festivals & Art Shows', 'Festivals & Art Shows'),('Outdoor Events', 'Outdoor Events')])
 
 
 

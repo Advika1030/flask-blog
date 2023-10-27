@@ -96,7 +96,7 @@ def account():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title = form.title.data, content = form.content.data, author = current_user, time=form.time.data, place=form.place.data, date=form.date.data)
+        post = Post(title = form.title.data, content = form.content.data, author = current_user, time=form.time.data, place=form.place.data, date=form.date.data, category=form.category.data)
         db.session.add(post)
         db.session.commit()
         flash('Your post has been created!','success')
@@ -139,6 +139,7 @@ def update_post(post_id):
         post.date = form.date.data  # Update date
         post.time = form.time.data  # Update time
         post.place = form.place.data  # Update place
+        post.category = form.category.data #Update category
         db.session.commit()
         flash('Your post has been updated', 'success')
         return redirect(url_for('post', post_id=post.id))
@@ -148,6 +149,7 @@ def update_post(post_id):
         form.date.data = post.date  # Populate date in the form
         form.time.data = post.time  # Populate time in the form
         form.place.data = post.place  # Populate place in the form
+        form.category.data = post.category
     return render_template('create_post.html', title='Update Post', form=form, legend='Update Post')
 
 @app.route("/post/<int:post_id>/delete", methods=['POST'])
@@ -206,6 +208,7 @@ def your_events():
 def search():
     if request.method == 'POST':
         query = request.form.get('query')
+        
         events = Post.query.filter(Post.title.contains(query)).all()
     else:
         events = []  # Display no results initially

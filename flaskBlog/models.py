@@ -34,6 +34,7 @@ class Post(db.Model):
     time = db.Column(db.String(10), nullable=True)  # Optional time field
     place = db.Column(db.String(100), nullable=True)  # Optional place field
     date = db.Column(db.Date, nullable=True)  # Optional date field
+    category = db.Column(db.String(50), nullable=True)  #Optional category field
     
 
     def __repr__(self):
